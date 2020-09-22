@@ -1,0 +1,47 @@
+@using System.Linq;
+@using System.Collections.Generic;
+
+<link rel="stylesheet" href="~/css/styles.css">
+<script src="/scripts/jquery-3.5.0.min.js"></script>
+<script src="/scripts/script.js"></script>
+
+@using GoFish.Models;
+<div class="hand">
+ @foreach(Card card in @Model.Player.Hand){
+    <img src=@("/img/" + card.Rank.ToCharArray()[0].ToString() + card.Suit.ToCharArray()[0].ToString() + ".png") alt="">
+ }
+  </div>
+
+ <form action="/newgame" method="post">
+  
+  <input type="hidden" id="playerone" name="playerone" value=@Model.Player.Id>
+  <select name="rank" id="rank">
+  @{
+    var hand =  (@Model.Player.Hand as IEnumerable<dynamic>).Select(x => x.Rank).Distinct().ToList();
+    @foreach(string s in hand)
+    {
+      <option value=@s>@s</option>
+    }
+  }
+    
+  </select>
+    <select name="playertwo" id="playertwo">
+    @foreach(Player iplayer in @Model.List)
+    {
+      <option value=@iplayer.Id>@iplayer.Id</option>
+    }
+    </select>
+     <button type="submit">Go!</button>
+ </form>
+
+
+@foreach(Player player in @Model.List){
+  <div>
+    <p>
+      @("Player " + @player.Id)
+    </p>
+     @foreach(Card card in player.Hand){
+      <img src=@("/img/blue_back.png") alt="">
+    }
+  </div>
+}

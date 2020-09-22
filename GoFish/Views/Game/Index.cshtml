@@ -1,0 +1,11 @@
+@if(Model == null){
+<form action="/" method="post">
+  <label for="players">How many players?</label>
+  <input type="number" name="players" id="players" required>
+  <button type="submit">Go!</button>
+</form>
+}
+else
+{
+  <a href="/player">View Players</a>
+}
