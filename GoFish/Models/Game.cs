@@ -10,10 +10,12 @@ namespace GoFish.Models
         public List<Player> Players = new List<Player>();
         public List<Card> CardDeck {get;set;}
         public static Game Current {get;set;}
-
+        public static int Moves {get;set;}
         public int WhoseTurn {get;set;}
+
         public Game(int players)
         {
+            Moves = 0;
             CardDeck = (new Deck()).Shuffle();
             int id = 0;
             int[] arr = new int[players];

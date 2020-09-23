@@ -9,17 +9,20 @@ namespace GoFish.Models
     {
         public int Id {get;set;}
         public List<Card> Hand{get;set;} 
+        public static bool Played {get;set;}
         public Player(List<Card> initialHand, int id)
         {
           Hand = initialHand;
           Id = id;
+          Played = false;
         }
 
+       
         public List<List<Card>> pairs = new List<List<Card>>();
 
         private void ReceiveCards(List<Card> received, string rank)
         {
-          received.Concat(Hand.Where(item => item.Rank == rank).ToList());
+          received = received.Concat(Hand.Where(item => item.Rank == rank).ToList()).ToList();
           Hand.RemoveAll(item => item.Rank == rank);
           pairs.Add(received);
         }
@@ -34,6 +37,8 @@ namespace GoFish.Models
           else{
             player.GoFish();
           }
+          Game.Current.NextTurn();
+          Game.Moves++;
         }
 
         public void GoFish()

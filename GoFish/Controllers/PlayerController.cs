@@ -35,7 +35,13 @@ namespace GoFish.Controllers
             Player p2 = Game.Current.Players.Where(x => x.Id == playertwo).ToList()[0];
             p2.GiveCards(rank, p);
             
-            return RedirectToAction("Show");
+            return RedirectToAction("Show",new {playerone = playerone});
+        }
+
+        [HttpGet("/player/update")]
+        public int Update()
+        {
+            return Game.Moves;
         }
 
     }

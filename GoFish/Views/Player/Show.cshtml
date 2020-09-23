@@ -1,18 +1,21 @@
 @using System.Linq;
 @using System.Collections.Generic;
-
+@using GoFish.Models;
 <link rel="stylesheet" href="~/css/styles.css">
 <script src="/scripts/jquery-3.5.0.min.js"></script>
-<script src="/scripts/script.js"></script>
+<script src="/scripts/site.js"></script>
 
-@using GoFish.Models;
+<p>@("It is player " + @Game.Current.WhoseTurn +"'s turn")</p>
+<p>There are @Game.Current.CardDeck.Count cards left in the deck</p>
+<input type="hidden" id="moves" value=@Game.Moves>
 <div class="hand">
  @foreach(Card card in @Model.Player.Hand){
-    <img src=@("/img/" + card.Rank.ToCharArray()[0].ToString() + card.Suit.ToCharArray()[0].ToString() + ".png") alt="">
+    string s = (card.Rank == "10") ? "10" :  card.Rank.ToCharArray()[0].ToString();
+    <img src=@("/img/" + s + card.Suit.ToCharArray()[0].ToString() + ".png") alt=""> 
  }
   </div>
 
- <form action="/newgame" method="post">
+ <form action="/player/@Model.Player.Id" method="post">
   
   <input type="hidden" id="playerone" name="playerone" value=@Model.Player.Id>
   <select name="rank" id="rank">
@@ -23,8 +26,17 @@
       <option value=@s>@s</option>
     }
   }
-    
   </select>
+  @foreach(List<Card> pair in @Model.Player.pairs)
+  {
+    <div>
+      @foreach(Card card in pair)
+      {
+        string s = (card.Rank == "10") ? "10" :  card.Rank.ToCharArray()[0].ToString();
+        <img src=@("/img/" + s + card.Suit.ToCharArray()[0].ToString() + ".png") alt=""> 
+      }
+    </div>
+  }
     <select name="playertwo" id="playertwo">
     @foreach(Player iplayer in @Model.List)
     {
@@ -35,13 +47,27 @@
  </form>
 
 
-@foreach(Player player in @Model.List){
+@foreach(Player player in @Model.List)
+{
   <div>
     <p>
       @("Player " + @player.Id)
     </p>
-     @foreach(Card card in player.Hand){
+    @foreach(Card card in player.Hand)
+    {
       <img src=@("/img/blue_back.png") alt="">
     }
+    <div>
+      @foreach(List<Card> pair in player.pairs)
+      {
+        <div>
+          @foreach(Card card in pair)
+          {
+            string s = (card.Rank == "10") ? "10" :  card.Rank.ToCharArray()[0].ToString();
+            <img src=@("/img/" + s + card.Suit.ToCharArray()[0].ToString() + ".png") alt=""> 
+          }
+        </div>
+      }
+    </div>
   </div>
 }
