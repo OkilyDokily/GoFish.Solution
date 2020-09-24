@@ -31,17 +31,13 @@ namespace GoFish.Controllers
         [HttpPost("/player/{playerone}")]
         public ActionResult Play(string rank, int playertwo, int playerone)
         {
-            Player p = Game.Current.Players.Where(x => x.Id == playerone).ToList()[0];
-            Player p2 = Game.Current.Players.Where(x => x.Id == playertwo).ToList()[0];
-            p2.GiveCards(rank, p);
+            if(playerone == Game.Current.WhoseTurn){
+                Player p = Game.Current.Players.Where(x => x.Id == playerone).ToList()[0];
+                Player p2 = Game.Current.Players.Where(x => x.Id == playertwo).ToList()[0];
+                p2.ForceCards(rank, p);
+            }
             
             return RedirectToAction("Show",new {playerone = playerone});
-        }
-
-        [HttpGet("/player/update")]
-        public int Update()
-        {
-            return Game.Moves;
         }
 
     }

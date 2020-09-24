@@ -2,9 +2,20 @@
 @using System.Collections.Generic;
 @using GoFish.Models;
 <link rel="stylesheet" href="~/css/styles.css">
-<script src="/scripts/jquery-3.5.0.min.js"></script>
-<script src="/scripts/site.js"></script>
 
+@if(Model.Player.Id != Game.Current.WhoseTurn && !Game.Current.IsGameOver())
+{
+  <meta http-equiv="refresh" content="3">
+}
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+
+@if(Game.Current.IsGameOver())
+{
+  <p>@("Player " + @Game.Current.DetermineWinner().Id + "won the game")</p>
+}
 <p>@("It is player " + @Game.Current.WhoseTurn +"'s turn")</p>
 <p>There are @Game.Current.CardDeck.Count cards left in the deck</p>
 <input type="hidden" id="moves" value=@Game.Moves>
@@ -27,7 +38,17 @@
     }
   }
   </select>
-  @foreach(List<Card> pair in @Model.Player.pairs)
+    <select name="playertwo" id="playertwo">
+    @foreach(Player iplayer in @Model.List)
+    {
+      <option value=@iplayer.Id>@iplayer.Id</option>
+    }
+    </select>
+    @if(Model.Player.Id == Game.Current.WhoseTurn && !Game.Current.IsGameOver()){
+     <button type="submit">Go!</button>
+    }
+ </form>
+ @foreach(List<Card> pair in @Model.Player.pairs)
   {
     <div>
       @foreach(Card card in pair)
@@ -37,15 +58,6 @@
       }
     </div>
   }
-    <select name="playertwo" id="playertwo">
-    @foreach(Player iplayer in @Model.List)
-    {
-      <option value=@iplayer.Id>@iplayer.Id</option>
-    }
-    </select>
-     <button type="submit">Go!</button>
- </form>
-
 
 @foreach(Player player in @Model.List)
 {
