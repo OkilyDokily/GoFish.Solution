@@ -15,9 +15,10 @@ namespace GoFish.Models
 
         public Game(int players)
         {
+            WhoseTurn = 1;
             Moves = 0;
             CardDeck = (new Deck()).Shuffle();
-            int id = 0;
+            int id = 1;
             int[] arr = new int[players];
             Array.ForEach(arr,item => {
                 List<Card> hand = CardDeck.Take(5).ToList();
@@ -30,9 +31,9 @@ namespace GoFish.Models
 
         public void NextTurn()
         {
-            if(WhoseTurn == Players.Count - 1)
+            if(WhoseTurn == Players.Count)
             {
-                WhoseTurn = 0;
+                WhoseTurn = 1;
             }
             else{
                 WhoseTurn++;
