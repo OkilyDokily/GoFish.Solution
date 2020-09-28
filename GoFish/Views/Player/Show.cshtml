@@ -2,15 +2,14 @@
 @using System.Collections.Generic;
 @using GoFish.Models;
 <link rel="stylesheet" href="~/css/styles.css">
-
+@if(Model.Player.Id == Game.Current.WhoseTurn){
+<script src="~/scripts/jquery-3.5.0.min.js"></script>
+<script src="~/scripts/site.js"></script>
+}
 @if(Model.Player.Id != Game.Current.WhoseTurn && !Game.Current.IsGameOver())
 {
   <meta http-equiv="refresh" content="3">
 }
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-
 
 @if(Game.Current.IsGameOver())
 {
@@ -22,46 +21,25 @@
 <div class="hand">
  @foreach(Card card in @Model.Player.Hand){
     string s = (card.Rank == "10") ? "10" :  card.Rank.ToCharArray()[0].ToString();
-    <img src=@("/img/" + s + card.Suit.ToCharArray()[0].ToString() + ".png") alt=""> 
+    <img class=@(card.Rank) src=@("/img/" + s + card.Suit.ToCharArray()[0].ToString() + ".png") alt=""> 
  }
   </div>
 
- <form action="/player/@Model.Player.Id" method="post">
-  
-  <input type="hidden" id="playerone" name="playerone" value=@Model.Player.Id>
-  <select name="rank" id="rank">
-  @{
-    var hand =  (@Model.Player.Hand as IEnumerable<dynamic>).Select(x => x.Rank).Distinct().ToList();
-    @foreach(string s in hand)
-    {
-      <option value=@s>@s</option>
-    }
-  }
-  </select>
-    <select name="playertwo" id="playertwo">
-    @foreach(Player iplayer in @Model.List)
-    {
-      <option value=@iplayer.Id>@iplayer.Id</option>
-    }
-    </select>
-    @if(Model.Player.Id == Game.Current.WhoseTurn && !Game.Current.IsGameOver()){
-     <button type="submit">Go!</button>
-    }
- </form>
- @foreach(List<Card> pair in @Model.Player.pairs)
+  @foreach(List<Card> pair in @Model.Player.pairs)
   {
-    <div>
+    string p = pair[0].Rank;
+    <div class=@("pair") id=@(p)>
       @foreach(Card card in pair)
       {
         string s = (card.Rank == "10") ? "10" :  card.Rank.ToCharArray()[0].ToString();
-        <img src=@("/img/" + s + card.Suit.ToCharArray()[0].ToString() + ".png") alt=""> 
+        <img class=@(s) src=@("/img/" + s + card.Suit.ToCharArray()[0].ToString() + ".png") alt=""> 
       }
     </div>
   }
 
 @foreach(Player player in @Model.List)
 {
-  <div>
+  <div id=@player.Id class="player">
     <p>
       @("Player " + @player.Id)
     </p>

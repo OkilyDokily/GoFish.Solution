@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using GoFish.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using System.Dynamic;
 
 namespace GoFish.Controllers
@@ -31,12 +32,12 @@ namespace GoFish.Controllers
         [HttpPost("/player/{playerone}")]
         public ActionResult Play(string rank, int playertwo, int playerone)
         {
+
             if(playerone == Game.Current.WhoseTurn){
                 Player p = Game.Current.Players.Where(x => x.Id == playerone).ToList()[0];
                 Player p2 = Game.Current.Players.Where(x => x.Id == playertwo).ToList()[0];
                 p2.ForceCards(rank, p);
             }
-            
             return RedirectToAction("Show",new {playerone = playerone});
         }
 

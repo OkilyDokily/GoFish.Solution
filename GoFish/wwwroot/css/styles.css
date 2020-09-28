@@ -7,3 +7,6 @@ img{
   display:flex;
 }
 
+.outline{
+  border: red solid 1px;
+}
