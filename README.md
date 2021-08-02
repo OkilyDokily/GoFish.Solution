@@ -14,7 +14,7 @@ _A classic game of Go Fish_
 ## Setup/Installation Requirements
 * Install dotnet core from https://dotnet.microsoft.com/download
 * Clone/download the repo
-* Navigate to the MadLibs folder
+* Navigate to the GoFish folder
 * type 'dotnet restore'
 * Run "dotnet run" to open the program
 * Follow the instructions within the app
